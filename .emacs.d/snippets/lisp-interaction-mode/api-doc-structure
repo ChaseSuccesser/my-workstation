@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: api doc structure
+# key: api
+# --
+
+== URL ==
+
+
+== Method ==
+
+
+== Media Type ==
+application/json
+
+==Oauth Strategy==
+
+
+== Request Params ==
+|name|need|type|note|
+
+== Response Entity ==
+|name|type|note|

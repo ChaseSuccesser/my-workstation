@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: select
+# key: se
+# --
+SELECT ${1:col} FROM ${2:table};

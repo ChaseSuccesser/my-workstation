@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: delete
+# key: del
+# --
+DELETE FROM ${1:table} WHERE ;

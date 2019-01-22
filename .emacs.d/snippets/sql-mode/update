@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: update
+# key: update
+# --
+UPDATE ${1:table} SET ${2:...} WHERE ${3:...};

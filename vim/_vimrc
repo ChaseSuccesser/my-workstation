@@ -1,0 +1,165 @@
+set nocompatible
+"设置显示行号
+set nu                         
+"设置主题
+colorscheme solarized
+set background=dark
+"set t_Co=256
+"设置字体
+set guifont=Source_Code_Pro:h10
+"一打开vim就全屏显示
+autocmd GUIEnter * simalt ~x 
+"语法高亮
+syntax enable
+syntax on
+"设置状态栏
+set statusline=%F%m%r%h%w\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%l,%v][%p%%]\ [LEN=%L]
+"自动识别编码
+set fileencodings=utf-8,gbk,big5
+
+"把输入的tab自动转换成空格，Python用户必用~
+set expandtab
+"设置tab键为4个空格
+set tabstop=4 
+"每一级自动缩进的空格数
+set shiftwidth=4
+"设置自动折行
+set wrap
+
+"显示标尺
+set ruler 
+"显示竖线
+set cursorcolumn
+"去掉输入错误的提示声音
+set noerrorbells
+"搜索忽略大小写
+set ignorecase
+"给页标签加上序号
+set guitablabel=%N.%t 
+"自动补全括号
+"inoremap ( ()<ESC>i
+"inoremap [ []<ESC>i
+"inoremap { {}<ESC>i
+"inoremap < <><ESC>i
+"为光标所在行加下划线
+set cursorline
+"代码折叠
+"set foldmethod=syntax
+filetype on
+"自动半透明
+"au GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 230)
+"F2切换菜单栏、工具栏
+set guioptions-=m
+set guioptions-=T
+map <silent> <F2> :if &guioptions =~# 'T' <Bar>
+        \set guioptions-=T <Bar>
+        \set guioptions-=m <bar>
+    \else <Bar>
+        \set guioptions+=T <Bar>
+        \set guioptions+=m <Bar>
+    \endif<CR>
+"普通模式下输入json即可
+map json <Esc>:%!python -m json.tool<CR>
+
+"map <F6> <c-e>   "上滚一行
+"map <F7> <c-y>   "下滚一行
+
+
+"-----------快捷键运行程序-----------"
+"F5运行java程序
+map <F5> :!javac %&&java %:r <CR>
+"F4运行Python程序
+map <F4> :w<cr>:!python %<cr>
+
+
+"-------------插件管理---------------"
+"配置NerdTree插件
+map <F3> :NERDTreeMirror<CR>
+map <F3> :NERDTreeToggle<CR>
+"配置Taglist插件
+"map <silent> <F9> :TlistToggle<cr> 
+"let Tlist_Show_One_File=1        "只显示当前文件的taglist，默认是显示多个
+"let Tlist_Exit_OnlyWindow=1      "如果taglist是最后一个窗口，则退出vim
+"let Tlist_Use_Right_Window = 1   "在右侧窗口中显示taglist
+"let Tlist_Use_SingleClick=1      "单击时跳转
+"配置ctags插件
+"set tags=tags;
+"set autochdir
+
+
+
+"-------------------vundle---------------  ---
+"git clone https://github.com/gmarik/vundle
+set rtp+=$VIM/vimfiles/bundle/vundle/       "Vundle的路径
+call vundle#begin('$VIM/vimfiles/bundle/')  "插件的安装路径
+Bundle 'gmarik/vundle'
+Plugin 'godlygeek/tabular'
+Plugin 'Pydiction'
+Bundle 'nvie/vim-flake8'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'scrooloose/nerdtree'
+call vundle#end()
+filetype plugin indent on
+
+"tabular文本对齐
+":Tab /=        等号对齐
+":Tab /:        冒号对齐
+":Tab /:\zs     冒号后的文字对齐
+
+"Pydiction自动补全   点击[tab]可以看到代码补全
+"filetype plugin on
+"let g:pydiction_location = 'D:\Vim\vimfiles\ftplugin\pydiction\complete-dict'
+
+"flake8  python静态检查
+"<F7>
+"change the max line length for PEP8:
+let g:flake8_max_line_length=99
+
+"tagbar插件使用   生成Outline视图
+"nmap <F7> :TagbarToggle<CR>
+
+
+
+"-----------------vim for node.js---------------
+"vim-nodejs-complete  
+"https://github.com/myhere/vim-nodejs-complete.git
+"复制after文件夹到~\vimfiles\after
+"使用方法：在编辑js代码时候，按ctrl-x和ctrl-o进入提示模式。
+
+"vim-node  
+"https://github.com/guileen/vim-node.git
+"复制dict文件夹到~\vimfiles\dict
+"添加字典文件 
+"au FileType javascript set dictionary+='D:\Vim\vimfiles\dict\node.dict'
+
+
+
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+set nobackup   "禁止生成临时文件
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
